@@ -17,16 +17,37 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">                  
-                    <div id="addcat" class="d-none mb-2 mt-2">
-                        @include('admin.cat.partials.catform')
+
+
+                    <div class="modal fade" id="addCatModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg"> 
+                            <div class="modal-content p-2">  
+                            <div id="addCatBody">
+                                @include('admin.cat.partials.catform')
+                            </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="editcat" class="d-none"></div>
+                    <div class="modal fade" id="editCatModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content p-2">
+                                <div id="editCatBody">
+                                    <!-- HTMX loads edit form here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   
                 </div>
-                <div>
-                    <button class="btn btn-success mb-3 mt-2" onclick="toggleAddCat()">
-                        + Add Category
+                <div class ='mb-3 mt-2'>
+                    <button class="btn btn-sm btn-success mt-3 mb-3"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addCatModal">
+                    Add Category
                     </button>
+
                 </div>
 
                 @include('admin.cat.partials.catsearch', [

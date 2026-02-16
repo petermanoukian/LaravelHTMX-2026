@@ -3,11 +3,13 @@
       hx-swap="innerHTML"
       hx-push-url="{{ route('admin.cat.index') }}"
       hx-disabled-elt="button[type=submit]"   
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" id ='addcat'
+      
+      >
  
     @csrf
-    <div class="mb-3 mt-2"><b> Add category </b></div>
-    <div class="mb-3">
+    <div class="mb-2 mt-1"><b> Add category </b></div>
+    <div class="mb-2">
         <label for="name" class="form-label">Category Name</label>
         <input type="text" 
             class="form-control" 
@@ -22,28 +24,29 @@
     </div>
 
 
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="des" class="form-label">Short Description</label>
         <textarea class="form-control" id="des" name="des"></textarea>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-2">
         <label for="dess" class="form-label">Details</label>
         <textarea class="dess form-control" id="dess" name="dess"></textarea>
     </div>
 
-    <div class="mb-3">
-        <label for="img" class="form-label">Image</label>
-        <input type="file" class="form-control" id="img" name="img" accept="image/*" onchange="previewImage(event, 'previewAdd')">
-        <div class="mt-2">
-            <img id="previewAdd" class="img-thumbnail d-none" style="max-width:150px;" alt="Preview">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <label for="img" class="form-label">Image</label>
+            <input type="file" class="form-control" id="img" name="img" accept="image/*" onchange="previewImage(event, 'previewAdd')">
+            <div class="mt-2">
+                <img id="previewAdd" class="img-thumbnail d-none" style="max-width:150px;" alt="Preview">
+            </div>
         </div>
-    </div>
+        <div class="col-md-6">
 
-
-    <div class="mb-3">
-        <label for="filer" class="form-label">File</label>
-        <input type="file" class="form-control" id="filer" name="filer">
+            <label for="filer" class="form-label">File</label>
+            <input type="file" class="form-control" id="filer" name="filer">
+        </div>
     </div>
 
     <button type="submit" class="btn btn-primary" onClick ="returnToPage1()">Add Category</button>

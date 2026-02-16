@@ -1,11 +1,11 @@
 <script>
 function toggleAddCat() {
     const addCat = document.getElementById('addcat');
-    addCat.classList.toggle('d-none');
+    //addCat.classList.toggle('d-none');
 
     if (!addCat.classList.contains('d-none')) {
        
-        htmx.process(addCat);
+        //htmx.process(addCat);
         addCat.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -13,7 +13,7 @@ function toggleAddCat() {
 function closeAddCat() {
     const addCat = document.getElementById('addcat');
     if (addCat && !addCat.classList.contains('d-none')) {
-        addCat.classList.add('d-none');
+        //addCat.classList.add('d-none');
     }
 }
 
@@ -60,7 +60,7 @@ document.body.addEventListener('htmx:beforeRequest', function(evt) {
 document.body.addEventListener('htmx:afterRequest', function(evt) {
     const target = evt.detail.target;
     target.classList.remove('loading');
-
+   
     // Scroll to the updated list
     if (evt.detail.verb && evt.detail.verb.toUpperCase() === 'POST') {
         if (target.id === 'viewcats' || target.id === 'editcat') {
@@ -73,7 +73,7 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
     const addForm = addCat.querySelector('form');
     if (addForm && evt.detail.target.id === 'viewcats') {
         addForm.reset(); // clears all fields including file inputs
-        addCat.classList.add('d-none'); // hide the form again
+        //addCat.classList.add('d-none'); // hide the form again
     }
 
     // 👇 NEW: scroll to editcat if it was the target
@@ -87,7 +87,7 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
     const editForm = editCat.querySelector('form');
     if (editForm && evt.detail.target.id === 'viewcats') {
         editForm.reset(); // clear fields
-        editCat.classList.add('d-none'); // hide the form again
+        //editCat.classList.add('d-none'); // hide the form again
     }
 
 
@@ -164,7 +164,7 @@ document.body.addEventListener('htmx:afterSwap', function(evt) {
         if (addCat) {
             const addForm = addCat.querySelector('form');
             if (addForm) addForm.reset();
-            addCat.classList.add('d-none');
+            //addCat.classList.add('d-none');
 
         }
 
@@ -172,13 +172,13 @@ document.body.addEventListener('htmx:afterSwap', function(evt) {
         if (editCat) {
             const editForm = editCat.querySelector('form');
             if (editForm) editForm.reset();
-            editCat.classList.add('d-none');
+            //editCat.classList.add('d-none');
             
         }
     }
 
     if (target.id === 'editcat') {
-        target.classList.remove('d-none');
+        //target.classList.remove('d-none');
         target.scrollIntoView({ behavior: 'smooth' });
     }
 });
@@ -190,9 +190,42 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
 
 
 
-function returnToPage1() {
-    // If HTMX is driving the request, wait for it to finish
-    document.body.addEventListener('htmx:afterRequest', function(evt) {
+function returnToPage1() 
+{
+    document.body.addEventListener('htmx:afterRequest', function(evt) 
+    {
+        
+        const form = evt.detail.elt;
+
+        if (!form || form.tagName !== 'FORM') return;
+
+        if (form.id !== 'addcat' && form.id !== 'editcat') return;
+
+        
+        if (form && form.id === 'addcat') {
+            console.log('Resetting ADD form');
+            form.reset(); // ✅ THIS WORKS
+        }
+
+        if (form.id === 'editcat') {
+            form.reset();
+
+            const editModal = document.getElementById('editCatModal');
+            if (editModal) {
+                bootstrap.Modal.getInstance(editModal)?.hide();
+            }
+        }
+        
+        const addModalEl = document.getElementById('addCatModal');
+        if (addModalEl) {
+            const modal = bootstrap.Modal.getInstance(addModalEl)
+                || new bootstrap.Modal(addModalEl);
+
+            modal.hide();
+        }
+
+
+        
         if (evt.detail.verb && evt.detail.verb.toUpperCase() !== 'GET') {
             const firstPageLink = document.getElementById('page1');
             if (firstPageLink) {
@@ -201,6 +234,9 @@ function returnToPage1() {
                     console.log("Clicked page 1 after HTMX request completed");
                 }, 500);
             }
+
+
+
         }
     });
 
@@ -215,47 +251,48 @@ function returnToPage1() {
 }
 
 
-    document.body.addEventListener('htmx:afterRequest', function(evt) {
-        if (evt.detail.target.id === 'name-validationadd') {
-            try {
-                const response = JSON.parse(evt.detail.xhr.responseText);
-                const input = document.getElementById('name');
-                const msg = document.getElementById('name-validationadd');
+document.body.addEventListener('htmx:afterRequest', function(evt) {
+    
+    if (evt.detail.target.id === 'name-validationadd') {
+        try {
+            const response = JSON.parse(evt.detail.xhr.responseText);
+            const input = document.getElementById('name');
+            const msg = document.getElementById('name-validationadd');
 
-                msg.textContent = response.message || '';
+            msg.textContent = response.message || '';
 
-                // If name is taken → clear input and block submit
-                if (response.valid === false) {
-                    input.value = '';
-                    input.setCustomValidity("Name already taken."); // prevents form submit
-                } else {
-                    input.setCustomValidity(""); // reset so form can submit
-                }
-            } catch (e) {
-                console.error('Validation parse error', e);
+            // If name is taken → clear input and block submit
+            if (response.valid === false) {
+                input.value = '';
+                input.setCustomValidity("Name already taken."); // prevents form submit
+            } else {
+                input.setCustomValidity(""); // reset so form can submit
             }
+        } catch (e) {
+            console.error('Validation parse error', e);
         }
+    }
 
-        if (evt.detail.target.id === 'name-validationupd') {
-            try {
-                const response = JSON.parse(evt.detail.xhr.responseText);
-                const input = document.getElementById('nameupd');
-                const msg = document.getElementById('name-validationupd');
-                msg.textContent = response.message || '';
+    if (evt.detail.target.id === 'name-validationupd') {
+        try {
+            const response = JSON.parse(evt.detail.xhr.responseText);
+            const input = document.getElementById('nameupd');
+            const msg = document.getElementById('name-validationupd');
+            msg.textContent = response.message || '';
 
-                if (response.valid === false) {
-                    input.value = '';
-                    input.setCustomValidity("Name already taken."); // block submit
-                } else {
-                    input.setCustomValidity(""); // allow submit
-                }
-            } catch (e) {
-                console.error('Validation parse error (update)', e);
+            if (response.valid === false) {
+                input.value = '';
+                input.setCustomValidity("Name already taken."); // block submit
+            } else {
+                input.setCustomValidity(""); // allow submit
             }
+        } catch (e) {
+            console.error('Validation parse error (update)', e);
         }
+    }
 
 
-    });
+});
 
 
 </script>
