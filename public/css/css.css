@@ -1,0 +1,52 @@
+.loading {
+    opacity: 0.5;
+    position: relative;
+}
+
+.loading::after {
+    content: "Loading...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+
+.pagination
+{
+    margin-left:10px !important;
+}
+
+
+
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+}
+.sortable-header:hover {
+    opacity: 0.8;
+}
+.sortable-header:hover .sort-arrows i {
+    opacity: 1 !important;
+}
+.sort-arrows {
+    display: inline-flex;
+    align-items: center;
+    min-width: 15px;
+}
+
+
+#addcat, #addsubcat , #add ,  #edit ,  #editcat{
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top:10px;margin-bottom:18px;
+}
+
+#viewcats table, #viewsubcats table , #viewlist table{
+    border: 1px solid #ccc;
+}

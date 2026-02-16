@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.pagination
+{
+    margin-left:10px !important;
+}
