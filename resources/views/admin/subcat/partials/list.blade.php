@@ -39,11 +39,13 @@
 
 
                     <a hx-get="{{ route('admin.subcat.edit', $subcat->id) }}"
-                        hx-target="#edit"
-                        hx-swap="innerHTML"
-                        class="btn btn-sm btn-primary">
-                        Edit
+                    hx-target="#editSubCatBody"
+                    hx-swap="innerHTML"
+                    class="btn btn-sm btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#editModal">
+                    Edit
                     </a>
+
                     <form hx-delete="{{ route('admin.subcat.destroy', $subcat->id) }}"
                         hx-target="#viewlist"
                         hx-swap="innerHTML"

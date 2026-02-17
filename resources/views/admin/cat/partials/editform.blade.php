@@ -9,7 +9,7 @@
 
     @method('PUT')
 
-    <div class="mb-2 mt-1"><b> Update category </b></div>
+  
 
     <div class="mb-2">
         <label for="name" class="form-label">Category Name</label>

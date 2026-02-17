@@ -152,14 +152,8 @@ document.body.addEventListener('htmx:afterSwap', function(evt) {
         // 3. Reset URL to clean base path (no ?page=...)
         //history.replaceState(null, '', '{{ route("admin.cat.index") }}');
 
-
-
-
-
-        // 4. Smooth scroll
         target.scrollIntoView({ behavior: 'smooth' });
 
-        // 5. Hide & reset forms
         const addCat = document.getElementById('addcat');
         if (addCat) {
             const addForm = addCat.querySelector('form');

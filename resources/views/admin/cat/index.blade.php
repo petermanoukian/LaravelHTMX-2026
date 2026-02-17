@@ -19,20 +19,36 @@
                 <div class="p-6 text-gray-900">                  
 
 
-                    <div class="modal fade" id="addCatModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-lg"> 
+                   <div class="modal fade" id="addCatModal" tabindex="-1" aria-hidden="true" 
+                        data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable"> 
                             <div class="modal-content p-2">  
-                            <div id="addCatBody">
-                                @include('admin.cat.partials.catform')
-                            </div>
+
+                                <!-- Modal header with close button -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Category</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body" id="addCatBody">
+                                    @include('admin.cat.partials.catform')
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal fade" id="editCatModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
+                    <div class="modal fade" id="editCatModal" tabindex="-1" aria-hidden="true" 
+                        data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
                             <div class="modal-content p-2">
-                                <div id="editCatBody">
+
+                                <!-- Modal header with close button -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Category</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body" id="editCatBody">
                                     <!-- HTMX loads edit form here -->
                                 </div>
                             </div>
@@ -62,7 +78,7 @@
 
 
 
-                </div>
+                
             </div>
         </div>
     </div>

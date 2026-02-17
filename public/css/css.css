@@ -50,3 +50,13 @@
 #viewcats table, #viewsubcats table , #viewlist table{
     border: 1px solid #ccc;
 }
+.zindex99 {
+    z-index: 999 !important;
+}
+.choices
+{
+    z-index: 999 !important;
+}
+.searchable {
+    position: relative !important; z-index: 999 !important;
+}

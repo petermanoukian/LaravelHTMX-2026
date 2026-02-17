@@ -8,7 +8,7 @@
       >
  
     @csrf
-    <div class="mb-2 mt-1"><b> Add category </b></div>
+
     <div class="mb-2">
         <label for="name" class="form-label">Category Name</label>
         <input type="text" 

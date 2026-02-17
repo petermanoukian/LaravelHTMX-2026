@@ -1,7 +1,7 @@
 <script>
 function toggleAdd() {
     const add = document.getElementById('add');
-    add.classList.toggle('d-none');
+    //add.classList.toggle('d-none');
 
     if (!add.classList.contains('d-none')) {
         htmx.process(add);
@@ -60,19 +60,19 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
     const addForm = add ? add.querySelector('form') : null;
     if (addForm && evt.detail.target.id === 'viewlist') {
         addForm.reset();
-        add.classList.add('d-none');
+        //add.classList.add('d-none');
     }
 
     const edit = document.getElementById('edit');
     if (evt.detail.target.id === 'edit') {
-        edit.classList.remove('d-none');
+        //edit.classList.remove('d-none');
         edit.scrollIntoView({ behavior: 'smooth' });
     }
 
     const editForm = edit ? edit.querySelector('form') : null;
     if (editForm && evt.detail.target.id === 'viewlist') {
         editForm.reset();
-        edit.classList.add('d-none');
+        //edit.classList.add('d-none');
     }
 
     if (evt.detail.target.id === 'viewlist') {
@@ -130,42 +130,90 @@ document.body.addEventListener('htmx:afterSwap', function(evt) {
         if (add) {
             const addForm = add.querySelector('form');
             if (addForm) addForm.reset();
-            add.classList.add('d-none');
+            //add.classList.add('d-none');
         }
 
         const edit = document.getElementById('edit');
         if (edit) {
             const editForm = edit.querySelector('form');
             if (editForm) editForm.reset();
-            edit.classList.add('d-none');
+            //edit.classList.add('d-none');
         }
     }
 
     if (target.id === 'edit') {
-        target.classList.remove('d-none');
+        //target.classList.remove('d-none');
         target.scrollIntoView({ behavior: 'smooth' });
     }
 });
 
 function returnToPage1() {
-    document.body.addEventListener('htmx:afterRequest', function(evt) {
-        if (evt.detail.verb && evt.detail.verb.toUpperCase() !== 'GET') {
+    document.body.addEventListener('htmx:afterRequest', function (evt) {
+
+        const el = evt.detail.elt;
+
+        // ✅ find form if it exists
+        const form = el.tagName === 'FORM'
+            ? el
+            : el.closest?.('form');
+
+        if (!form) return;
+
+        if (form.id !== 'addsubcat' && form.id !== 'editsubcat') return;
+
+
+
+        if (form.id === 'addsubcat') {
+            form.reset();
+        }
+
+        const addModalEl = document.getElementById('addModal');
+        if (addModalEl) {
+            bootstrap.Modal.getInstance(addModalEl)?.hide();
+        }
+
+        if (evt.detail.verb?.toUpperCase() !== 'GET') {
             const firstPageLink = document.getElementById('page1');
-            if (firstPageLink) {
-                setTimeout(function() {
-                    firstPageLink.click();
-                }, 500);
-            }
+            firstPageLink && setTimeout(() => firstPageLink.click(), 500);
         }
     });
-
-    setTimeout(function() {
-        const firstPageLink = document.getElementById('page1');
-        if (firstPageLink) {
-            firstPageLink.click();
-        }
-    }, 700);
 }
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.body.addEventListener('list-mutated', function () {
+
+
+        const editModal = document.getElementById('editModal');
+        if (editModal) {
+            bootstrap.Modal.getInstance(editModal)?.hide();
+        }
+
+        const editForm = document.getElementById('editsubcat');
+        if (editForm) {
+            editForm.reset();
+        }
+
+
+    });
+
+});
+
+
+document.body.addEventListener('htmx:afterRequest', e => {
+    console.log('afterRequest fired from', e.detail.elt);
+});
+
+document.body.addEventListener('htmx:afterSwap', e => {
+    console.log('afterSwap target', e.target);
+});
+
+
+
+
+
 
 document.body.addEventListener('htmx:afterRequest', function(evt) {
     if (evt.detail.target.id === 'name-validationadd') {
