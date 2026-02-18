@@ -101,5 +101,5 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" onClick="returnToPage1()">Update</button>
+    <button type="submit" class="btn btn-primary" >Update</button>
 </form>

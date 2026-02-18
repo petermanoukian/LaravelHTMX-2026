@@ -77,5 +77,5 @@
             <input type="file" class="form-control" id="filer" name="filer">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary" onClick ="returnToPage1()">Update Category</button>
+    <button type="submit" class="btn btn-primary" >Update Category</button>
 </form>

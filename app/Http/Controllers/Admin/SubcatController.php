@@ -191,10 +191,10 @@ class SubcatController extends Controller
 
             if ($request->headers->has('HX-Request')) {
                 $subcats = $this->service->paginated($filters, 'id', 'desc', ['cat'], 5);
-
+                $subcats->withPath(route('admin.subcat.index', ['catid' => $catidx]));
                 return response()
                     ->view('admin.subcat.partials.list', compact('subcats'))
-                    ->header('HX-Trigger', 'list-mutated')
+                    ->header('HX-Trigger', 'subcat-saved')
                     ->header('HX-Push-Url', route('admin.subcat.index', ['catid' => $catidx ]));
             }
 
@@ -259,8 +259,9 @@ class SubcatController extends Controller
 
         if ($request->headers->has('HX-Request')) {
             $subcats = $this->service->paginated($filters, 'id','desc',['cat'],5);
+            $subcats->withPath(route('admin.subcat.index', ['catid' => $catidx]));
             return response()->view('admin.subcat.partials.list', compact('subcats'))
-                ->header('HX-Trigger','list-mutated')
+                ->header('HX-Trigger','subcat-updated')
                 ->header('HX-Push-Url', route('admin.subcat.index', ['catid' => $catidx ]));
         }
 

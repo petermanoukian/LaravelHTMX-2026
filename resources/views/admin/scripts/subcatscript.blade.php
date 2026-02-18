@@ -172,10 +172,7 @@ function returnToPage1() {
             bootstrap.Modal.getInstance(addModalEl)?.hide();
         }
 
-        if (evt.detail.verb?.toUpperCase() !== 'GET') {
-            const firstPageLink = document.getElementById('page1');
-            firstPageLink && setTimeout(() => firstPageLink.click(), 500);
-        }
+
     });
 }
 
@@ -183,23 +180,57 @@ function returnToPage1() {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    document.body.addEventListener('list-mutated', function () {
+    document.body.addEventListener('subcat-saved', function () {
+
+        const addModal = document.getElementById('addModal');
 
 
+        addModal && bootstrap.Modal.getInstance(addModal)?.hide();
+
+
+        const elx = event.target; // get the element that triggered
+        const formx = elx.tagName === 'FORM' ? elx : elx.closest('form');
+
+        if (!formx) return;
+        if (formx.id === 'addsubcat') {
+            formx.reset();
+        }
+
+
+
+        const firstPageLink1 = document.getElementById('page1');
+        //firstPageLink1 && setTimeout(() => firstPageLink1.click(), 500);
+    });
+
+
+    document.body.addEventListener('subcat-updated', function () {
+   
         const editModal = document.getElementById('editModal');
-        if (editModal) {
-            bootstrap.Modal.getInstance(editModal)?.hide();
+        editModal && bootstrap.Modal.getInstance(editModal)?.hide();
+
+
+        const form = el.tagName === 'FORM'
+            ? el
+            : el.closest?.('form');
+
+        if (!form) return;
+
+        if (form.id !== 'addsubcat' && form.id !== 'editsubcat') return;
+
+
+
+        if (form.id === 'editsubcat') {
+            form.reset();
         }
 
-        const editForm = document.getElementById('editsubcat');
-        if (editForm) {
-            editForm.reset();
-        }
 
 
+        const firstPageLink2 = document.getElementById('page1');
+        //firstPageLink2 && setTimeout(() => firstPageLink2.click(), 500);
     });
 
 });
+
 
 
 document.body.addEventListener('htmx:afterRequest', e => {

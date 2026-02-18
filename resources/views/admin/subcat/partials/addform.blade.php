@@ -56,5 +56,5 @@
             <input type="file" class="form-control" id="filer" name="filer">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary" onClick="returnToPage1()">Add SubCategory</button>
+    <button type="submit" class="btn btn-primary" >Add SubCategory</button>
 </form>
