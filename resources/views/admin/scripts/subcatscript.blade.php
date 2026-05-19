@@ -281,6 +281,73 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
         }
     }
 });
+
+function deleteSubcat(id) {
+    if (!confirm('Are you sure you want to delete this subcategory?')) {
+        return;
+    }
+
+    htmx.ajax('DELETE', '/admin/subcat/' + id, {
+        target: '#viewlist',
+        swap: 'innerHTML',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    });
+
+    // Refresh after delete
+    setTimeout(() => {
+        refreshCurrentPage();   // reuse the same function you already have
+    }, 600);
+} 
+
+
+function refreshCurrentPage() {
+    const activePage = document.querySelector('.page-item.active a');
+    if (activePage) {
+        activePage.click();
+    } else {
+        const page1 = document.getElementById('page1');
+        if (page1) page1.click();
+    }
+} 
+
+
+
+function resetSubcatForm() {
+    console.log("resetSubcatForm started - waiting...");
+
+    setTimeout(() => {
+        
+        // Reset form
+        const addForm = document.getElementById('addsubcat');
+        if (addForm) {
+            addForm.reset();
+        }
+
+        // Clear image preview
+        const preview = document.getElementById('previewAdd');   // you said you already set correct ID
+        if (preview) {
+            preview.classList.add('d-none');
+            preview.src = '';
+        }
+
+        // Clear WYSIWYG
+        if (typeof $.trumbowyg !== 'undefined') {
+            $('#des').trumbowyg('empty');
+            $('#dess').trumbowyg('empty');
+        } else {
+            const des = document.getElementById('des');
+            const dess = document.getElementById('dess');
+            if (des) des.value = '';
+            if (dess) dess.value = '';
+        }
+
+        console.log("✅ Subcategory form fully reset after delay");
+
+    }, 3000);   // ← 3 seconds like category (increase to 4000 or 5000 if needed)
+}
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script> 

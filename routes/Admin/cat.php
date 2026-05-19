@@ -17,7 +17,8 @@ Route::post('cat/store', [CatController::class, 'store'])->name('cat.store');
 
 Route::get('cat/{id}', [CatController::class, 'show'])->name('cat.show');
 Route::get('cat/{cat}/edit', [CatController::class, 'edit'])->name('cat.edit');
-Route::put('cat/{cat}', [CatController::class, 'update'])->name('cat.update');
+Route::match(['post','put'], 'cat/{cat}', [CatController::class, 'update'])->name('cat.update');
+
 
 Route::delete('cat/{cat}', [CatController::class, 'destroy'])->name('cat.destroy');
 Route::match(['post', 'delete'], 'cat/destroy-all/destoryall', [CatController::class, 'destroyAll'])->name('cat.destroyAll');

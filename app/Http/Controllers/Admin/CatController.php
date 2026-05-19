@@ -150,7 +150,7 @@ class CatController extends Controller
             //$cats = $this->service->paginated([], 'id', 'desc', [], 5)->setPage(1);
             //$cats = $this->service->paginated([], 'id', 'desc', [], 5);
             return response()->view('admin.cat.partials.catlist', compact('cats'))
-            ->header('HX-Trigger', 'list-mutated');
+            ->header('HX-Trigger', 'list-mutated, closeEditModal');
         }
 
         return redirect()->route('admin.cat.index')->with('success', 'Cat updated');
@@ -266,11 +266,9 @@ class CatController extends Controller
         $this->service->delete($cat);
         $currentPage = $request->query('page', 1);
         if ($request->headers->has('HX-Request')) { 
-            //$cats = $this->service->paginated([], 'id', 'desc', [], 5)->setPage($currentPage);
             $cats = $this->service->paginated([], 'id', 'desc', [], 5)->setPage(1);
-            //$cats = $this->service->paginated([], 'id', 'desc', [], 5);
             return response()->view('admin.cat.partials.catlist', compact('cats'))
-            ->header('HX-Trigger', 'list-mutated');
+                ->header('HX-Trigger', 'list-mutated, closeEditModal'); // extra trigger
         }
 
         //return redirect()->route('admin.cat.index')->with('success', 'Cat deleted');

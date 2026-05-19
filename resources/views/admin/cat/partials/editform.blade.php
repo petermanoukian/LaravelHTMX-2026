@@ -4,6 +4,7 @@
       hx-push-url="{{ route('admin.cat.index') }}"
       enctype="multipart/form-data"
      hx-disabled-elt="button[type=submit]" id = 'editcat'
+     
     >
     @csrf
 
@@ -77,5 +78,5 @@
             <input type="file" class="form-control" id="filer" name="filer">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary" >Update Category</button>
+    <button type="submit" class="btn btn-primary" onclick="finishUpdate()">Update Category</button>
 </form>

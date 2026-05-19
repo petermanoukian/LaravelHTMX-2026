@@ -49,5 +49,5 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" onClick ="returnToPage1()">Add Category</button>
+    <button type="submit" class="btn btn-primary" onClick ="returnToPage1(1)">Add Category</button>
 </form>

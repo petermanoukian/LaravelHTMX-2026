@@ -46,14 +46,11 @@
                     Edit
                     </a>
 
-                    <form hx-delete="{{ route('admin.subcat.destroy', $subcat->id) }}"
-                        hx-target="#viewlist"
-                        hx-swap="innerHTML"
-                        hx-confirm="Are you sure you want to delete this ?"
-                        style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
+                    <button type="button" 
+                            class="btn btn-sm btn-danger"
+                            onclick="deleteSubcat({{ $subcat->id }})">
+                        Delete
+                    </button>
                 </td>
             </tr>
         @endforeach

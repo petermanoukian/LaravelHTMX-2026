@@ -183,66 +183,67 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
 });
 
 
+function returnToPage1(page = 1) {
+    console.log("returnToPage called for page", page);
 
-function returnToPage1() 
-{
-    document.body.addEventListener('htmx:afterRequest', function(evt) 
-    {
-        
-        const form = evt.detail.elt;
+    // Close modals
+    const addModalEl = document.getElementById('addCatModal');
+    if (addModalEl) {
+        const modal = bootstrap.Modal.getInstance(addModalEl) || new bootstrap.Modal(addModalEl);
+        modal.hide();
+    }
 
-        if (!form || form.tagName !== 'FORM') return;
+    const editModalEl = document.getElementById('editCatModal');
+    if (editModalEl) {
+        const modal = bootstrap.Modal.getInstance(editModalEl);
+        if (modal) modal.hide();
+    }
 
-        if (form.id !== 'addcat' && form.id !== 'editcat') return;
-
-        
-        if (form && form.id === 'addcat') {
-            console.log('Resetting ADD form');
-            form.reset(); // ✅ THIS WORKS
-        }
-
-        if (form.id === 'editcat') {
-            form.reset();
-
-            const editModal = document.getElementById('editCatModal');
-            if (editModal) {
-                bootstrap.Modal.getInstance(editModal)?.hide();
-            }
-        }
-        
-        const addModalEl = document.getElementById('addCatModal');
-        if (addModalEl) {
-            const modal = bootstrap.Modal.getInstance(addModalEl)
-                || new bootstrap.Modal(addModalEl);
-
-            modal.hide();
-        }
-
-
-        
-        if (evt.detail.verb && evt.detail.verb.toUpperCase() !== 'GET') {
-            const firstPageLink = document.getElementById('page1');
-            if (firstPageLink) {
-                setTimeout(function() {
-                    firstPageLink.click(); // 👈 programmatically click page 1
-                    console.log("Clicked page 1 after HTMX request completed");
-                }, 500);
+    // Full Reset with delay
+    setTimeout(() => {
+        // Reset Add Form
+        const addForm = document.getElementById('addcat');
+        if (addForm) {
+            addForm.reset();
+            
+            // Clear image preview
+            const previewAdd = document.getElementById('previewAdd');
+            if (previewAdd) {
+                previewAdd.classList.add('d-none');
+                previewAdd.src = '';
             }
 
+            // Clear Trumbowyg / WYSIWYG editors
+            if (typeof $.trumbowyg !== 'undefined') {
+                $('#des').trumbowyg('empty');
+                $('#dess').trumbowyg('empty');
+            } else {
+                // Fallback if trumbowyg not loaded
+                document.getElementById('des').value = '';
+                document.getElementById('dess').value = '';
+            }
 
-
+            console.log("Add form fully reset (including preview + wysiwyg)");
         }
-    });
 
-    // If it's a normal Laravel POST (non-HTMX), fallback with timeout
-    setTimeout(function() {
-        const firstPageLink = document.getElementById('page1');
-        if (firstPageLink) {
-            firstPageLink.click(); // 👈 programmatically click page 1
-            console.log("Clicked page 1 after normal submit");
+        // Reset Edit Form (if needed)
+        const editForm = document.getElementById('editcat');
+        if (editForm) {
+            editForm.reset();
+            // Add similar preview/wysiwyg clearing for edit if you have them
         }
-    }, 700);
+
+        // Refresh the page
+        const pageLink = document.getElementById('page' + page);
+        if (pageLink) {
+            pageLink.click();
+        } else {
+            const page1 = document.getElementById('page1');
+            if (page1) page1.click();
+        }
+    }, 3000);
 }
+
 
 
 document.body.addEventListener('htmx:afterRequest', function(evt) {
@@ -288,6 +289,61 @@ document.body.addEventListener('htmx:afterRequest', function(evt) {
 
 });
 
+function closeEditModal() {
+    const modalEl = document.getElementById('editCatModal');
+    if (modalEl) {
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+    }
+}
 
+// Also handle via trigger (backup)
+document.body.addEventListener('htmx:trigger', function(evt) {
+    if (evt.detail.trigger === 'closeEditModal') {
+        closeEditModal();
+    }
+});
+
+
+function deleteCategory(id) {
+    if (!confirm('Are you sure you want to delete this category?')) {
+        return;
+    }
+
+    htmx.ajax('DELETE', '/admin/cat/' + id, {   // ← Hardcode the URL pattern
+        target: '#viewcats',
+        swap: 'innerHTML',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    });
+
+    // Refresh current page after delete
+    setTimeout(() => {
+        refreshCurrentPage();
+    }, 600);
+}
+function finishUpdate() {
+    setTimeout(() => {
+        // Close modal if open
+        const editModal = document.getElementById('editCatModal');
+        if (editModal) {
+            bootstrap.Modal.getInstance(editModal)?.hide();
+        }
+
+        // Refresh current page
+        refreshCurrentPage();
+    }, 400);
+}
+
+function refreshCurrentPage() {
+    const activePage = document.querySelector('.page-item.active a');
+    if (activePage) {
+        activePage.click();
+    } else {
+        const page1 = document.getElementById('page1');
+        if (page1) page1.click();
+    }
+}
 </script>
 
